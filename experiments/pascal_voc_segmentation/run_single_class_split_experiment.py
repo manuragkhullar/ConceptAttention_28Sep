@@ -209,6 +209,7 @@ if __name__ == "__main__":
                 layers=args.layers,
                 target_space=target_space,
                 joint_attention_kwargs=None, 
+                null_txt="" ,
                 apply_blur=args.apply_blur,
             )
             mask = map_predictions_to_voc_class_indices(
