@@ -215,7 +215,13 @@ def generate_concept_basis_and_image_representation(
         if offload:
             generator.t5, generator.clip = generator.t5.to(device), generator.clip.to(device)
         inp = prepare(t5=generator.t5, clip=generator.clip, img=encoded_image, prompt=caption)
-
+        # 🔧 Patch: make sure null_txt keys exist
+        if "null_txt" not in inp:
+            inp["null_txt"] = ""
+        if "null_txt_vec" not in inp:
+            inp["null_txt_vec"] = torch.zeros_like(inp["concept_vec"])
+        if "null_txt_ids" not in inp:
+            inp["null_txt_ids"] = torch.zeros_like(inp["concept_ids"])
         concept_embeddings, concept_ids, concept_vec = embed_concepts(
             generator.clip,
             generator.t5,
